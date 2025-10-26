@@ -6,7 +6,7 @@
 /*   By: zhuwu <zhuwu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 10:04:49 by zhuwu             #+#    #+#             */
-/*   Updated: 2025/10/26 11:14:55 by zhuwu            ###   ########.fr       */
+/*   Updated: 2025/10/26 12:57:56 by zhuwu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,26 @@ static	int	ft_formats(va_list args, char format)
 int	ft_printf(const char *str, ...)
 {
 	va_list	args;
-	int		i;
 	int		count;
+	int		temp;
 
-	i = 0;
 	count = 0;
 	va_start(args, str);
-	while (str[i] != '\0')
+	while (*str != '\0')
 	{
-		if (str[i] == '%')
+		if (*str == '%')
 		{
-			count += ft_formats(args, str[i + 1]);
-			i++;
+			temp = ft_formats(args, *(str + 1));
+			if (temp == -1)
+				return (-1);
+			count += temp;
+			str++;
 		}
+		else if (ft_printchar(*str) == -1)
+			return (-1);
 		else
-		{
-			ft_printchar(str[i]);
 			count++;
-		}
-		i++;
+		str++;
 	}
 	va_end(args);
 	return (count);
